@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewBehaviourScript : MonoBehaviour
 {
     public GameObject pauseText;
+    public TMP_Text scoreText;
     bool countdown = false;
     float timer = 0;
+    int score = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +23,11 @@ public class NewBehaviourScript : MonoBehaviour
     {
         // Input.GetAxisRaw("horizontal");
         float speed = 10f;
-        transform.position += new Vector3(Input.GetAxis("Horizontal")*speed * Time.deltaTime, 0, Input.GetAxis("Vertical")*speed * Time.deltaTime);
+        transform.position += new Vector3(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Time.timeScale == 0) { 
+            if (Time.timeScale == 0)
+            {
                 Time.timeScale = 1;
                 pauseText.SetActive(false);
             }
@@ -36,9 +41,9 @@ public class NewBehaviourScript : MonoBehaviour
         {
             countdown = true;
         }
-        if(countdown)
+        if (countdown)
         {
-            if(timer < 3)
+            if (timer < 3)
             {
                 timer += Time.deltaTime;
                 Debug.Log(timer);
@@ -48,10 +53,17 @@ public class NewBehaviourScript : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
             }
         }
-        
+
     }
-    private void onTriggerEnter(Collider other)
+
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("entered trigger");
+        score = score + 1;
+        Debug.Log(score);
+        float newX = Random.Range(-12, 12);
+        float newZ = Random.Range(-5, 5);
+        other.transform.position = new Vector3(newX, 11, newZ);
+        scoreText.text = "Score: " + score;
+
     }
 }
